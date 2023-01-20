@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package dfs_service;
+
+service DFSService {
+
+    // Add your service calls here
+
+    // 1. REQUIRED (Parts 1 & 2): A method to store files on the server
+    rpc Store(stream FileContent) returns (Ack) {};
+
+    // 2. REQUIRED (Parts 1 & 2): A method to fetch files from the server
+    rpc Fetch(Request) returns (stream FileContent) {};
+
+    // 3. REQUIRED (Parts 1 & 2): A method to list all files on the server
+    rpc List(Request) returns (stream FileList) {};
+
+    // 4. REQUIRED (Parts 1 & 2): A method to get the status of a file on the server
+    rpc Stat(Request) returns (FileStat) {};
+
+    // 5. REQUIRED (Part 2 only): A method to request a write lock from the server
+    rpc RequestWriteAccess(WriteAccess) returns (Ack) {};
+    
+    // 6. REQUIRED (Part 2 only): A method named CallbackList to handle asynchronous file listing requests
+    //                            from a client. This method should return a listing of files along with their
+    //                            attribute information. The expected attribute information should include name,
+    //                            size, modified time, and creation time.
+    rpc CallbackList(Request) returns (CallbackFileList) {};
+
+    // 7. REQUIRED (Part 2 only): A method to delete a file from the server
+    rpc Delete(WriteAccess) returns (Ack) {};
+
+    // 8. Any other methods you deem necessary to complete the tasks of this assignment
+
+
+}
+
+// Add your message types here
+message Request {
+    string name = 1;
+}
+
+message Ack {
+    string message = 1;
+}
+
+message WriteAccess {
+    string filename = 1;
+    string clientid = 2;
+}
+
+message FileContent {
+    string name = 1;
+    string clientid = 2;
+    //uint32 crc = 3;
+    //int32 mtime = 4;
+    bytes foo = 5;
+}
+
+message FileList {
+    string name = 1;
+    int32 mtime = 2;
+}
+
+message FileStat {
+    string name = 1;
+    uint32 crc = 2;
+    int32 mtime = 3;
+    int32 size = 4;
+    int32 creationTime = 5;
+}
+
+message CallbackFileList {
+    repeated FileStat stat = 1;
+}
+
