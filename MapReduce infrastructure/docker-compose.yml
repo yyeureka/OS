@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+    aos:
+        image: cbbond/cs6210-pr3-pr4:latest
+        container_name: aos_container
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.50'
+                    memory: 1024M
+        volumes:
+            - .:/aos/projects:rw
+volumes:
+    aos_projects:
+        external: false
+networks:
+    default:
+        driver: bridge

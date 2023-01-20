@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package masterworker;
+
+service MrTask {
+    rpc AssignTask (Request) returns (Reply) {}
+}
+
+message Request {
+    string user_id = 1;
+	string task_type = 2;  // "map", "reduce"
+    repeated Shard shards = 3;
+    int32 index = 4;
+    string output_dir = 5;
+    int32 n_output_files = 6;
+    int32 worker_id = 7;
+}
+
+message Reply {
+    int32 status = 1;  // finish status, true:success, false:fail
+    repeated string output_files = 2;
+}
+
+message Shard {
+    string filename = 1;
+    int32 start = 2;
+    int32 line_count = 3;  
+}
