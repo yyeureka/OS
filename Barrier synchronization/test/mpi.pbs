@@ -1,0 +1,25 @@
+#PBS -N mpi
+#PBS -l nodes=1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1
+#PBS -l pmem=1gb
+#PBS -l walltime=00:10:00
+#PBS -q coc-ice
+#PBS -j oe
+#PBS -o mpi.out
+
+echo "Started on `/bin/hostname`"
+echo "Nodes chosen are:"
+cat $PBS_NODEFILE
+
+cd ~/mpi
+
+module load gcc mvapich2/2.3
+mpicc -g -Wall mpi_mcs.c -o mpi_mcs
+mpicc -g -Wall -lm mpi_dissemination.c -o mpi_dissemination
+mpicc -g -Wall -lm mpi_tournament.c -o mpi_tournament
+
+for num in 2 3 4 5 6 7 8 9 10 11 12
+do
+	mpirun -np $num ./mpi_mcs $num 1000
+    mpirun -np $num ./mpi_dissemination $num 1000
+	mpirun -np $num ./mpi_tournament $num 1000
+done

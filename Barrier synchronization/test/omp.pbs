@@ -1,0 +1,27 @@
+#PBS -N omp
+#PBS -l nodes=1:ppn=8
+#PBS -l pmem=1gb
+#PBS -l walltime=00:10:00
+#PBS -q coc-ice
+#PBS -j oe
+#PBS -o omp.out
+
+echo "Started on `/bin/hostname`"
+echo "Nodes chosen are:"
+cat $PBS_NODEFILE
+
+cd ~/omp
+
+module load gcc gcc/4.9.0
+export OMP_NUM_THREADS=8
+
+gcc -fopenmp omp_centralized.c -o omp_centralized
+gcc -fopenmp -lm omp_dissemination.c -o omp_dissemination
+gcc -fopenmp omp_mcs.c -o omp_mcs
+
+for num in 2 3 4 5 6 7 8
+do
+	./omp_centralized $num
+	./omp_dissemination $num
+	./omp_mcs $num
+done

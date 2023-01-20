@@ -1,0 +1,33 @@
+#PBS -N combined.pbs
+#PBS -l nodes=1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1+1:ppn=1
+#PBS -l pmem=1gb
+#PBS -l walltime=00:10:00
+#PBS -q coc-ice
+#PBS -j oe
+#PBS -o combined.out
+
+module load gcc/8.3.0 intel/19.0.5 mvapich2/2.3.2
+
+# Combination
+export MPV_CPU_BINDING_POLICY=hybrid
+export OMP_PROC_BIND=true
+export VIADEV_USE_AFFINITY=0
+export MV2_ENABLE_AFFINITY=0
+export MV2_THREADS_PER_PROCESS=2
+
+cd ~/combined
+mpicc -Wall -lm -fopenmp -lgomp combined.c -o combined
+
+cat $PBS_NODEFILE | uniq > hostfile
+for p in 2 4
+do
+export MPI_NUM_PROCS=$p
+
+for t in 2 4
+do
+export OMP_NUM_THREADS=$t
+	mpirun -np 2 -hostfile hostfile ./combined $p $t 2
+done
+
+done
+
