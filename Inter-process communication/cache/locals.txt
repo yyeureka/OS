@@ -1,0 +1,9 @@
+/courses/ud923/filecorpus/IMG_0954.jpg cached_files/IMG_0954.jpg
+/courses/ud923/filecorpus/IMG_0954.mov cached_files/IMG_0954.mov
+/courses/ud923/filecorpus/priest.txt cached_files/priest.txt
+/courses/ud923/filecorpus/priest1.txt cached_files/priest1.txt
+/courses/ud923/filecorpus/priest2.txt cached_files/priest2.txt
+/courses/ud923/filecorpus/paraglider.jpg cached_files/paraglider.jpg 
+/courses/ud923/filecorpus/road.jpg cached_files/road.jpg 
+/courses/ud923/filecorpus/yellowstone.jpg cached_files/yellowstone.jpg 
+/courses/ud923/filecorpus/moranabovejacksonlake.jpg cached_files/moranabovejacksonlake.jpg
